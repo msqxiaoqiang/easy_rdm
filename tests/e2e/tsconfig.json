@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "lib": ["ES2020", "ESNext", "DOM"],
+    "strict": true,
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "paths": {
+      "@pages/*": ["pages/*"]
+    }
+  },
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules"]
+}

@@ -1,0 +1,195 @@
+# Docker Compose 集成测试环境
+# 覆盖 6 种 Redis 连接模式：TCP、SSH 隧道、TLS、哨兵、集群、SOCKS5 代理
+
+services:
+  # ===== TCP 连接 =====
+
+  # 普通 TCP + 密码认证
+  redis:
+    image: redis:7.2-alpine
+    ports:
+      - "16379:6379"
+    command: redis-server --save "" --appendonly no --requirepass testpass
+
+  # 无密码 TCP
+  redis-nopass:
+    image: redis:7.2-alpine
+    ports:
+      - "16380:6379"
+    command: redis-server --save "" --appendonly no
+
+  # ===== SSH 隧道 =====
+
+  # SSH 隧道目标 Redis（仅 Docker 网络内可达，不暴露端口）
+  redis-ssh:
+    image: redis:7.2-alpine
+    command: redis-server --save "" --appendonly no
+
+  # SSH 服务器（本地构建，基于 redis:7.2-alpine + openssh）
+  ssh-server:
+    build:
+      context: .
+      dockerfile: dockerfiles/ssh-server.Dockerfile
+    ports:
+      - "2222:2222"
+    volumes:
+      - ./certs/ssh_test_key.pub:/home/testuser/.ssh/authorized_keys:ro
+
+  # ===== TLS 加密连接 =====
+
+  redis-tls:
+    image: redis:7.2-alpine
+    ports:
+      - "16381:6379"
+    command: redis-server /etc/redis/redis-tls.conf
+    volumes:
+      - ./redis-tls.conf:/etc/redis/redis-tls.conf:ro
+      - ./certs:/tls:ro
+
+  # ===== 哨兵模式 =====
+  # 注意：在 Docker Desktop for Mac 上，sentinel 返回的 master 地址是 Docker 内部 IP，
+  # 从 host 上的 Go 测试无法直接连接，因此 sentinel 测试会被 graceful skip。
+  # 在 Linux 上（真正的 host 网络）sentinel 测试可以正常通过。
+
+  redis-master:
+    image: redis:7.2-alpine
+    ports:
+      - "16382:6379"
+    command: >
+      redis-server --save "" --appendonly no
+      --requirepass masterpass --masterauth masterpass
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "masterpass", "ping"]
+      interval: 2s
+      timeout: 3s
+      retries: 10
+
+  redis-slave:
+    image: redis:7.2-alpine
+    ports:
+      - "16383:6379"
+    command: >
+      redis-server --save "" --appendonly no
+      --replicaof redis-master 6379 --masterauth masterpass --requirepass masterpass
+    depends_on:
+      redis-master:
+        condition: service_healthy
+
+  sentinel-1:
+    image: redis:7.2-alpine
+    ports:
+      - "26379:26379"
+    entrypoint: sh
+    command:
+      - -c
+      - |
+        until redis-cli -h redis-master -p 6379 -a masterpass ping 2>/dev/null | grep -q PONG; do sleep 1; done
+        printf 'port 26379\nsentinel monitor mymaster redis-master 6379 2\nsentinel down-after-milliseconds mymaster 5000\nsentinel failover-timeout mymaster 10000\nsentinel auth-pass mymaster masterpass\nsentinel resolve-hostnames yes\nsentinel announce-hostnames yes\n' > /tmp/sentinel.conf
+        redis-sentinel /tmp/sentinel.conf
+    depends_on:
+      redis-master:
+        condition: service_healthy
+      redis-slave:
+        condition: service_started
+
+  sentinel-2:
+    image: redis:7.2-alpine
+    ports:
+      - "26380:26380"
+    entrypoint: sh
+    command:
+      - -c
+      - |
+        until redis-cli -h redis-master -p 6379 -a masterpass ping 2>/dev/null | grep -q PONG; do sleep 1; done
+        printf 'port 26380\nsentinel monitor mymaster redis-master 6379 2\nsentinel down-after-milliseconds mymaster 5000\nsentinel failover-timeout mymaster 10000\nsentinel auth-pass mymaster masterpass\nsentinel resolve-hostnames yes\nsentinel announce-hostnames yes\n' > /tmp/sentinel.conf
+        redis-sentinel /tmp/sentinel.conf
+    depends_on:
+      redis-master:
+        condition: service_healthy
+      redis-slave:
+        condition: service_started
+
+  sentinel-3:
+    image: redis:7.2-alpine
+    ports:
+      - "26381:26381"
+    entrypoint: sh
+    command:
+      - -c
+      - |
+        until redis-cli -h redis-master -p 6379 -a masterpass ping 2>/dev/null | grep -q PONG; do sleep 1; done
+        printf 'port 26381\nsentinel monitor mymaster redis-master 6379 2\nsentinel down-after-milliseconds mymaster 5000\nsentinel failover-timeout mymaster 10000\nsentinel auth-pass mymaster masterpass\nsentinel resolve-hostnames yes\nsentinel announce-hostnames yes\n' > /tmp/sentinel.conf
+        redis-sentinel /tmp/sentinel.conf
+    depends_on:
+      redis-master:
+        condition: service_healthy
+      redis-slave:
+        condition: service_started
+
+  # ===== 集群模式（3 master 节点，使用 redis:7.2-alpine 原生集群） =====
+
+  redis-node-1:
+    image: redis:7.2-alpine
+    ports:
+      - "7101:6379"
+      - "17101:16379"
+    command: >
+      redis-server --save "" --appendonly no
+      --cluster-enabled yes --cluster-config-file nodes.conf
+      --cluster-node-timeout 5000
+    networks:
+      cluster-net:
+
+  redis-node-2:
+    image: redis:7.2-alpine
+    ports:
+      - "7102:6379"
+      - "17102:16379"
+    command: >
+      redis-server --save "" --appendonly no
+      --cluster-enabled yes --cluster-config-file nodes.conf
+      --cluster-node-timeout 5000
+    networks:
+      cluster-net:
+
+  redis-node-3:
+    image: redis:7.2-alpine
+    ports:
+      - "7103:6379"
+      - "17103:16379"
+    command: >
+      redis-server --save "" --appendonly no
+      --cluster-enabled yes --cluster-config-file nodes.conf
+      --cluster-node-timeout 5000
+    networks:
+      cluster-net:
+
+  # 集群初始化容器（一次性，创建集群后退出）
+  cluster-init:
+    image: redis:7.2-alpine
+    depends_on:
+      - redis-node-1
+      - redis-node-2
+      - redis-node-3
+    entrypoint: sh
+    command:
+      - -c
+      - |
+        sleep 3
+        redis-cli --cluster create redis-node-1:6379 redis-node-2:6379 redis-node-3:6379 --cluster-replicas 0 --cluster-yes
+    networks:
+      cluster-net:
+
+  # ===== SOCKS5 代理 =====
+
+  socks5-proxy:
+    image: docker.1ms.run/serjs/go-socks5-proxy
+    ports:
+      - "11080:1080"
+    environment:
+      - PROXY_USER=testuser
+      - PROXY_PASSWORD=testpass
+
+networks:
+  cluster-net:
+    driver: bridge

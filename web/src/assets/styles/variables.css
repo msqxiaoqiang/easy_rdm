@@ -1,0 +1,231 @@
+/* ========== CSS Variable Token System ========== */
+
+:root {
+  /* --- Colors: Primary (Tiny RDM Red) --- */
+  --color-primary: #DB2C20;
+  --color-primary-light: #E8544A;
+  --color-primary-dark: #C41D13;
+  --color-primary-bg: rgba(219, 44, 32, 0.08);
+
+  /* --- Colors: Semantic --- */
+  --color-success: #00b42a;
+  --color-success-bg: rgba(0, 180, 42, 0.08);
+  --color-warning: #ff7d00;
+  --color-warning-bg: rgba(255, 125, 0, 0.08);
+  --color-error: #f53f3f;
+  --color-error-bg: rgba(245, 63, 63, 0.08);
+  --color-info: #DB2C20;
+
+  /* --- Colors: Text --- */
+  --color-text-1: #1d2129;
+  --color-text-2: #4e5969;
+  --color-text-3: #86909c;
+  --color-text-4: #c9cdd4;
+  --color-text-disabled: #c9cdd4;
+
+  /* --- Colors: Background --- */
+  --color-bg-1: #ffffff;
+  --color-bg-2: #f7f8fa;
+  --color-bg-3: #f2f3f5;
+  --color-bg-4: #e5e6eb;
+  --color-bg-5: #1d2129;
+  --color-bg-white: #ffffff;
+  --color-bg-popup: #ffffff;
+  --color-bg-overlay: rgba(29, 33, 41, 0.6);
+
+  /* --- Colors: Border --- */
+  --color-border-1: #f2f3f5;
+  --color-border-2: #e5e6eb;
+  --color-border-3: #c9cdd4;
+  --color-border-4: #86909c;
+
+  /* --- Colors: Fill --- */
+  --color-fill-1: #f7f8fa;
+  --color-fill-2: #f2f3f5;
+  --color-fill-3: #e5e6eb;
+  --color-fill-4: #c9cdd4;
+
+  /* --- TTL Colors --- */
+  --color-ttl-danger: #f53f3f;
+  --color-ttl-warning: #ff7d00;
+  --color-ttl-safe: #00b42a;
+  --color-ttl-permanent: #86909c;
+
+  /* --- Type Badge Colors --- */
+  --color-type-string: #4080ff;
+  --color-type-list: #00b42a;
+  --color-type-set: #ff7d00;
+  --color-type-zset: #f53f3f;
+  --color-type-hash: #722ed1;
+  --color-type-stream: #0fc6c2;
+  --color-type-geo: #13c2c2;
+  --color-type-rejson: #e8590c;
+  --color-type-string-bg: rgba(64, 128, 255, 0.1);
+  --color-type-list-bg: rgba(0, 180, 42, 0.1);
+  --color-type-set-bg: rgba(255, 125, 0, 0.1);
+  --color-type-zset-bg: rgba(245, 63, 63, 0.1);
+  --color-type-hash-bg: rgba(114, 46, 209, 0.1);
+  --color-type-stream-bg: rgba(15, 198, 194, 0.1);
+  --color-type-geo-bg: rgba(19, 194, 194, 0.1);
+  --color-type-rejson-bg: rgba(232, 89, 12, 0.1);
+
+  /* --- JSON Syntax Highlighting --- */
+  --color-json-string: #0a7e07;
+  --color-json-number: #1677ff;
+  --color-json-boolean: #d4380d;
+  --color-json-null: #86909c;
+  --color-json-key: #1d2129;
+
+  /* --- Spacing --- */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 24px;
+  --spacing-xxl: 32px;
+
+  /* --- Font --- */
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-family-mono: 'Monaco', 'Menlo', 'Consolas', 'Source Code Pro', monospace;
+  --font-size-xs: 12px;
+  --font-size-sm: 13px;
+  --font-size-md: 14px;
+  --font-size-lg: 16px;
+  --font-size-xl: 18px;
+  --font-size-xxl: 20px;
+  --line-height: 1.5;
+
+  /* --- Border Radius --- */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+  --radius-xl: 14px;
+  --radius-round: 50%;
+
+  /* --- Shadow --- */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 20px rgba(0, 0, 0, 0.1);
+
+  /* --- Glass Effect --- */
+  --glass-bg: #f7f8fa;
+  --glass-blur: none;
+
+  /* --- Transition --- */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s ease;
+  --transition-slow: 0.35s ease;
+
+  /* --- Layout --- */
+  --sidebar-width: 260px;
+  --topbar-height: 40px;
+  --subtab-height: 36px;
+
+}
+
+/* Arco Theme Override — must target body (Arco sets variables on body, not :root) */
+/* Uses comma-separated RGB format required by Arco's rgb(var(--arcoblue-6)) syntax */
+body {
+  --arcoblue-1: 253, 236, 235;
+  --arcoblue-2: 249, 200, 197;
+  --arcoblue-3: 244, 160, 155;
+  --arcoblue-4: 238, 116, 108;
+  --arcoblue-5: 232, 84, 74;
+  --arcoblue-6: 219, 44, 32;
+  --arcoblue-7: 196, 29, 19;
+  --arcoblue-8: 168, 20, 12;
+  --arcoblue-9: 140, 14, 8;
+  --arcoblue-10: 112, 10, 5;
+}
+
+/* ========== Dark Theme ========== */
+[data-theme='dark'] {
+  --color-primary: #E8544A;
+  --color-primary-light: #F07B72;
+  --color-primary-dark: #DB2C20;
+  --color-primary-bg: rgba(232, 84, 74, 0.15);
+
+  --color-success: #27c346;
+  --color-success-bg: rgba(39, 195, 70, 0.15);
+  --color-warning: #ff9a2e;
+  --color-warning-bg: rgba(255, 154, 46, 0.15);
+  --color-error: #f76560;
+  --color-error-bg: rgba(247, 101, 96, 0.15);
+
+  --color-text-1: #f5f5f5;
+  --color-text-2: #c9cdd4;
+  --color-text-3: #86909c;
+  --color-text-4: #636d7e;
+  --color-text-disabled: #4e5969;
+
+  --color-bg-1: #17171a;
+  --color-bg-2: #232324;
+  --color-bg-3: #2a2a2b;
+  --color-bg-4: #3c3c3c;
+  --color-bg-5: #f5f5f5;
+  --color-bg-white: #232324;
+  --color-bg-popup: #2a2a2b;
+  --color-bg-overlay: rgba(0, 0, 0, 0.6);
+
+  --color-border-1: #2a2a2b;
+  --color-border-2: #3c3c3c;
+  --color-border-3: #4e5969;
+  --color-border-4: #86909c;
+
+  --color-fill-1: #232324;
+  --color-fill-2: #2a2a2b;
+  --color-fill-3: #3c3c3c;
+  --color-fill-4: #4e5969;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 20px rgba(0, 0, 0, 0.5);
+
+  --glass-bg: rgba(35, 35, 36, 0.85);
+
+  /* --- TTL Colors (dark) --- */
+  --color-ttl-danger: #f76560;
+  --color-ttl-warning: #ff9a2e;
+  --color-ttl-safe: #27c346;
+  --color-ttl-permanent: #86909c;
+
+  /* --- Type Badge Colors (dark) --- */
+  --color-type-string: #5a9aff;
+  --color-type-list: #27c346;
+  --color-type-set: #ff9a2e;
+  --color-type-zset: #f76560;
+  --color-type-hash: #9254de;
+  --color-type-stream: #36cfc9;
+  --color-type-geo: #36cfc9;
+  --color-type-rejson: #ff7a45;
+  --color-type-string-bg: rgba(90, 154, 255, 0.15);
+  --color-type-list-bg: rgba(39, 195, 70, 0.15);
+  --color-type-set-bg: rgba(255, 154, 46, 0.15);
+  --color-type-zset-bg: rgba(247, 101, 96, 0.15);
+  --color-type-hash-bg: rgba(146, 84, 222, 0.15);
+  --color-type-stream-bg: rgba(54, 207, 201, 0.15);
+  --color-type-geo-bg: rgba(54, 207, 201, 0.15);
+  --color-type-rejson-bg: rgba(255, 122, 69, 0.15);
+
+  /* --- JSON Syntax Highlighting (dark) --- */
+  --color-json-string: #7ec87e;
+  --color-json-number: #5aa0ff;
+  --color-json-boolean: #f5836b;
+  --color-json-null: #86909c;
+  --color-json-key: #c9cdd4;
+
+}
+
+/* Arco dark mode overrides (must target body to beat Arco's body[arco-theme='dark']) */
+body[arco-theme='dark'] {
+  --arcoblue-1: 50, 20, 18;
+  --arcoblue-2: 79, 25, 21;
+  --arcoblue-3: 112, 30, 24;
+  --arcoblue-4: 153, 35, 27;
+  --arcoblue-5: 200, 50, 40;
+  --arcoblue-6: 232, 84, 74;
+  --arcoblue-7: 240, 123, 114;
+  --arcoblue-8: 247, 162, 155;
+  --arcoblue-9: 251, 200, 197;
+  --arcoblue-10: 253, 236, 235;
+}

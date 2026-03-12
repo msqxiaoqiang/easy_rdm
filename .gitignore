@@ -1,0 +1,42 @@
+# omc 构建产物
+omc/
+
+# Go
+backend/vendor/
+backend/data/
+!backend/data/templates/
+
+# Frontend
+web/node_modules/
+web/dist/
+web/.vite/
+
+# Desktop (Wails)
+desktop/easy_rdm_desktop
+desktop/data/
+desktop/frontend/dist/
+desktop/frontend/wailsjs/
+desktop/build/bin/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Runtime
+tmp/
+*.sock
+*.port
+
+tests/screenshots
+docs
+.playwright-mcp
+demo

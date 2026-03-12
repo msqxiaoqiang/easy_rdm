@@ -1,0 +1,19 @@
+{
+  "$schema": "https://wails.io/schemas/config.v2.json",
+  "name": "Easy RDM",
+  "outputfilename": "easy-rdm",
+  "frontend:install": "cd ../../web && npm install",
+  "frontend:build": "cd ../../web && VITE_PLATFORM=desktop npx vite build --outDir ../desktop/frontend/dist",
+  "frontend:dev:watcher": "bash dev-frontend.sh",
+  "frontend:dev:serverUrl": "auto",
+  "author": {
+    "name": "Easy RDM"
+  },
+  "info": {
+    "companyName": "Easy RDM",
+    "productName": "Easy RDM",
+    "productVersion": "1.0.0",
+    "copyright": "Copyright 2026 Easy RDM",
+    "comments": "Visual Redis Management Tool"
+  }
+}

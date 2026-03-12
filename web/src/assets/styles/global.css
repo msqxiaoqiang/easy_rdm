@@ -1,0 +1,232 @@
+/* ========== Global Reset & Base Styles ========== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+  font-family: var(--font-family);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height);
+  color: var(--color-text-1);
+  background-color: var(--color-bg-1);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-fill-3) transparent;
+}
+
+#app {
+  height: 100%;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+/* ========== Scrollbar ========== */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-fill-3);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-fill-4);
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::selection {
+  background: var(--color-primary-bg);
+  color: var(--color-primary);
+}
+
+/* ========== Focus Styles ========== */
+
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 1px;
+}
+
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: none;
+}
+
+/* ========== Global Transitions ========== */
+
+button,
+a,
+input,
+select,
+textarea {
+  transition: border-color var(--transition-fast),
+              background-color var(--transition-fast),
+              color var(--transition-fast),
+              box-shadow var(--transition-fast),
+              opacity var(--transition-fast);
+}
+
+/* ========== CSS Tooltip (rendered via JS delegation to body, see main.ts) ========== */
+/* data-tooltip elements no longer use ::after pseudo-elements.
+   Tooltip rendering is handled by initDataTooltip() in main.ts
+   which appends a body-level .body-tooltip-popup element. */
+
+/* ========== Ellipsis Tip Popup (body-appended, not clipped by overflow:hidden) ========== */
+
+.ellipsis-tip-popup,
+.body-tooltip-popup {
+  position: fixed;
+  display: none;
+  padding: 5px 10px;
+  background: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  font-size: 12px;
+  line-height: 1.4;
+  max-width: 360px;
+  word-break: break-all;
+  border-radius: var(--radius-sm);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+  z-index: 9999;
+  box-shadow: var(--shadow-md);
+}
+
+.ellipsis-tip-popup {
+  user-select: text;
+  cursor: text;
+}
+
+.body-tooltip-popup {
+  pointer-events: none;
+  white-space: nowrap;
+  word-break: normal;
+}
+
+/* ========== Dialog Form Styles ========== */
+
+/* 纵向布局：label 在上、控件在下（简单弹框） */
+.dialog-label {
+  display: block;
+  margin-bottom: var(--spacing-xs);
+  margin-top: var(--spacing-sm);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-2);
+}
+
+.dialog-label:first-child {
+  margin-top: 0;
+}
+
+/* 表单行容器 */
+.form-row {
+  margin-bottom: var(--spacing-md);
+}
+
+.form-row:last-child {
+  margin-bottom: 0;
+}
+
+/* 纵向布局：label 在上、控件在下 */
+.form-label {
+  display: block;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-2);
+  margin-bottom: var(--spacing-xs);
+}
+
+.form-hint {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-4);
+}
+
+/* ========== Glass / Frosted Effects ========== */
+
+/* 模态框毛玻璃背景 */
+.arco-modal-mask {
+  backdrop-filter: blur(6px) saturate(180%);
+  -webkit-backdrop-filter: blur(6px) saturate(180%);
+}
+
+/* 模态框去除标题和底部分割线 */
+.arco-modal-header {
+  border-bottom: none;
+}
+
+.arco-modal-footer {
+  border-top: none;
+}
+
+/* 模态框出现/消失动画增强 */
+.arco-modal-wrapper .arco-modal {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.25s ease !important;
+}
+
+/* Select 下拉面板自动适应内容宽度，避免 option 文本被截断 */
+.arco-select-dropdown {
+  min-width: max-content !important;
+}
+
+/* 下拉菜单/弹出层微动画 */
+.arco-trigger-popup {
+  animation: popup-in 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes popup-in {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Tooltip 弹出带微缩放 */
+.arco-tooltip-popup,
+.body-tooltip-popup {
+  animation: tooltip-in 0.15s ease-out;
+}
+
+@keyframes tooltip-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* 按钮点击反馈 */
+.arco-btn:active {
+  transform: scale(0.96);
+  transition: transform 0.1s ease;
+}
+
+/* 列表项 hover 微动画 */
+.connection-item {
+  transition: all 0.2s ease, background 0.15s ease !important;
+}
+
+.connection-item:hover {
+  transform: translateX(2px);
+}

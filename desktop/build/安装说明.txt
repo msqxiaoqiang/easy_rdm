@@ -1,0 +1,49 @@
+Easy RDM macOS 安装说明
+========================
+
+【安装步骤】
+
+1. 将 Easy RDM.app 拖入右侧 Applications 文件夹
+2. 关闭此窗口，弹出磁盘镜像
+
+
+【首次打开 - 重要】
+
+由于应用未经 Apple 签名，macOS 会提示"文件已损坏"或"无法验证开发者"。
+这不是文件损坏，是 macOS 对未签名应用的正常拦截。
+
+请打开「终端」，粘贴以下命令并回车：
+
+    xattr -cr /Applications/Easy\ RDM.app
+
+然后双击 Easy RDM.app 即可正常打开。
+
+或者：系统设置 → 隐私与安全性 → 找到被阻止的提示 → 点击"仍要打开"
+
+
+【数据位置】
+
+数据保存在应用内部（Easy RDM.app/Contents/data/）。
+删除应用即同时删除所有数据，无残留。
+
+
+【开发者：模拟 Gatekeeper 拦截测试】
+
+本地构建的 .app 不会被 macOS 拦截（因为没有 quarantine 属性）。
+如需验证"首次打开"的完整流程，手动添加隔离属性：
+
+    xattr -w com.apple.quarantine "0081;00000000;Safari;0000" /Applications/Easy\ RDM.app
+
+添加后双击 .app，macOS 会弹出"无法验证开发者"的警告。
+此时按上方【首次打开】的步骤操作即可验证流程。
+
+检查是否有隔离属性：
+
+    xattr -l /Applications/Easy\ RDM.app | grep quarantine
+
+有输出表示有隔离属性（会被拦截），无输出表示已清除。
+
+
+【卸载】
+
+将 /Applications/Easy RDM.app 拖入废纸篓即可，数据随之清除。

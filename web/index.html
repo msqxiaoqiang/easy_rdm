@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Easy RDM</title>
+    <style>
+      body { margin: 0; height: 100%; overflow: hidden; }
+      html { height: 100%; }
+      #app-loading {
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: opacity 0.2s;
+      }
+      #app-loading.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+      #app-loading .spinner {
+        width: 32px; height: 32px;
+        border: 3px solid rgba(128,128,128,0.2);
+        border-top-color: rgba(128,128,128,0.6);
+        border-radius: 50%;
+        animation: ld-spin 0.7s linear infinite;
+      }
+      @keyframes ld-spin { to { transform: rotate(360deg); } }
+    </style>
+    <script>
+      // 同步设置主题背景，避免白屏闪烁
+      ;(function(){
+        var t = localStorage.getItem('app-theme') || 'dark';
+        if (t === 'auto') t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        var bg = t === 'dark' ? '#17171a' : '#ffffff';
+        var sc = t === 'dark' ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.08)';
+        var st = t === 'dark' ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.3)';
+        document.documentElement.setAttribute('data-theme', t);
+        // 写入 CSS 变量供 loading 使用
+        var ds = document.documentElement.style;
+        ds.setProperty('--ld-bg', bg);
+        ds.setProperty('--ld-sc', sc);
+        ds.setProperty('--ld-st', st);
+      })();
+    </script>
+    <style>
+      #app-loading { background: var(--ld-bg); }
+      #app-loading .spinner {
+        border-color: var(--ld-sc);
+        border-top-color: var(--ld-st);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app-loading"><div class="spinner"></div></div>
+    <div id="app"></div>
+    <script src="gmAppSdk.js"></script>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
